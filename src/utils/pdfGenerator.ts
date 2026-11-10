@@ -55,21 +55,21 @@ export async function generarPDFBase64(data: PDFGeneratorData): Promise<string> 
   const ML = 50;   // margen izq
   const MR = 50;   // margen der
   const contentW = W - ML - MR;   // 495.28
-  const TOP = H - 40;             // y del borde superior útil
+  const TOP = H - 12; // empieza desde arriba, como tu original             // y del borde superior útil
 
   // ────────────────────────────────────────────────────────────────────────────
   // HEADER  (y de TOP-110 a TOP)
   // ────────────────────────────────────────────────────────────────────────────
-  const HDR_H  = 110;
+  const HDR_H  = 135;
   const HDR_Y  = TOP - HDR_H;    // bottom del header
-  const BLK_W  = 240;            // bloque oscuro derecho
-  const BLK_X  = W - MR - BLK_W;
+  const BLK_W  = 242;            // bloque oscuro derecho
+  const BLK_X  = 297.2; // exacto original
 
   // Bloque oscuro (derecha)
   page.drawRectangle({ x: BLK_X, y: HDR_Y, width: BLK_W, height: HDR_H, color: DARK });
 
   // Borde inferior dorado (full content width)
-  page.drawRectangle({ x: ML, y: HDR_Y - 4, width: contentW, height: 4, color: GOLD });
+  page.drawRectangle({ x: BLK_X, y: HDR_Y - 4, width: BLK_W, height: 4, color: GOLD }); // solo debajo del bloque oscuro
 
   // Logo (izquierda) — máx 100px ancho
   if (data.logoBase64) {
@@ -77,13 +77,14 @@ export async function generarPDFBase64(data: PDFGeneratorData): Promise<string> 
       const b64 = data.logoBase64.includes(',') ? data.logoBase64.split(',')[1] : data.logoBase64;
       const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
       const img   = await pdfDoc.embedJpg(bytes);
-      const logoW = 100;
-      const logoH = img.height * (logoW / img.width);
-      const logoY = HDR_Y + (HDR_H - logoH) / 2 + 10; // centrado vertical + subir un poco para texto debajo
-      page.drawImage(img, { x: ML, y: logoY, width: logoW, height: logoH });
-      // DOBERXI debajo del logo
-      page.drawText('DOBERXI', { x: ML, y: logoY - 14, size: 14, font: bold, color: BLACK });
-      page.drawText('ADMINISTRATIVE AUTOMATION', { x: ML, y: logoY - 23, size: 6, font: regular, color: GRAY_MED });
+      const logoW = 112;
+      const logoH = 120;
+      const logoX = 95; // centrado en hueco 50-297
+      const logoY = HDR_Y + 10; // subido 10pt para no tocar la línea dorada
+      // Rectángulo blanco detrás para que los agujeros de las letras queden claros, no oscuros
+      page.drawRectangle({ x: logoX - 2, y: logoY - 2, width: logoW + 4, height: logoH + 4, color: WHITE });
+      page.drawImage(img, { x: logoX, y: logoY, width: logoW, height: logoH });
+      // El logo ya incluye DOBERXI + ADMINISTRATIVE AUTOMATION, no duplicar texto
     } catch {
       page.drawText('DOBERXI', { x: ML, y: HDR_Y + HDR_H - 30, size: 14, font: bold, color: BLACK });
       page.drawText('ADMINISTRATIVE AUTOMATION', { x: ML, y: HDR_Y + HDR_H - 42, size: 6, font: regular, color: GRAY_MED });
@@ -109,7 +110,7 @@ export async function generarPDFBase64(data: PDFGeneratorData): Promise<string> 
   // ────────────────────────────────────────────────────────────────────────────
   const SEC_GAP = 15;
   const COL_W   = (contentW - SEC_GAP) / 2;
-  let   curY    = HDR_Y - 4 - 20; // bajo el borde dorado + padding
+  let   curY    = HDR_Y - 4 - 12; // bajo el borde dorado + padding
 
   function drawInfoBox(x: number, label: string, lineColor: typeof GOLD | typeof BLUE_SIDE, lines: string[]) {
     // Label con línea lateral
@@ -255,7 +256,7 @@ export async function generarPDFBase64(data: PDFGeneratorData): Promise<string> 
   const totalW = bold.widthOfTextAtSize(totalStr, 14);
   page.drawText(totalStr, { x: TOT_R_X + TOT_R_W - totalW - 8, y: iy - 16, size: 14, font: bold, color: WHITE });
 
-  curY = Math.min(curY - CF_H, iy - TOT_BLK_H) - 20;
+  curY = Math.min(curY - CF_H, iy - TOT_BLK_H) - 12;
 
   // ────────────────────────────────────────────────────────────────────────────
   // PAGO / PLAZO  (solo facturas)
