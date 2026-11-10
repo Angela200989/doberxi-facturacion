@@ -22,7 +22,7 @@ export default function InvoiceTemplateDoberxi(props: InvoiceTemplateProps) {
   const { tipo, emisora, cliente, lineas, numero, fecha, base_imponible, iva_porcentaje, iva_importe, irpf_porcentaje, irpf_importe, total, huella, qrData, logoBase64 } = props;
   const isFactura = tipo === 'factura';
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', fontSize: 13, color: '#1e293b', background: '#fff', width: '100%', padding: 40 }}>
+    <div style={{ fontFamily: 'Arial, sans-serif', fontSize: 13, color: '#141F2B', background: '#fff', width: '100%', padding: 40 }}>
       {/* HEADER - 58% logo / 42% bloque, hueco blanco */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
         <div style={{ width: '48%', textAlign: 'left' }}>
@@ -30,7 +30,7 @@ export default function InvoiceTemplateDoberxi(props: InvoiceTemplateProps) {
           <div style={{ fontSize: 14, fontWeight: 900, letterSpacing: 2, marginTop: 4 }}>DOBERXI</div>
           <div style={{ fontSize: 6, color: '#9CA3AF', letterSpacing: 2 }}>ADMINISTRATIVE AUTOMATION</div>
         </div>
-        <div style={{ width: 240, background: '#1E293B', padding: '18px 16px', flexShrink: 0 }}>
+        <div style={{ width: 240, background: '#141F2B', padding: '18px 16px', flexShrink: 0 }}>
           <div style={{ fontSize: 28, fontWeight: 900, color: '#fff', lineHeight: 1 }}>{isFactura ? 'FACTURA' : 'PRESUPUESTO'}</div>
           <div style={{ fontSize: 14, fontWeight: 700, color: '#C9A86A', marginTop: 8 }}>Nº {numero}</div>
           <div style={{ fontSize: 9, color: '#CBD5E1', marginTop: 4 }}>{fmtFecha(fecha)}</div>
@@ -57,7 +57,7 @@ export default function InvoiceTemplateDoberxi(props: InvoiceTemplateProps) {
       {/* TRABAJOS - SIN fila TOTAL */}
       <div style={{ fontWeight: 700, fontSize: 11, marginBottom: 8 }}>TRABAJOS REALIZADOS</div>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 15 }}>
-        <thead><tr style={{ background: '#1E293B', color: '#fff', fontSize: 9 }}>
+        <thead><tr style={{ background: '#141F2B', color: '#fff', fontSize: 9 }}>
           <th style={{ textAlign: 'left', padding: '8px 6px', width: '40%' }}>Descripción</th>
           <th style={{ textAlign: 'center', padding: '8px 6px', width: '15%' }}>Cantidad</th>
           <th style={{ textAlign: 'right', padding: '8px 6px', width: '18%' }}>Precio unitario</th>
@@ -86,7 +86,7 @@ export default function InvoiceTemplateDoberxi(props: InvoiceTemplateProps) {
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, padding: '4px 0' }}><span>Base imponible</span><span>{fmt(base_imponible)}</span></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, padding: '4px 0' }}><span>IVA ({iva_porcentaje}%)</span><span>{fmt(iva_importe)}</span></div>
           {isFactura && irpf_importe !== undefined && <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, padding: '4px 0' }}><span>Retención IRPF ({irpf_porcentaje || 7}%)</span><span style={{ color: '#DC2626' }}>-{fmt(irpf_importe)}</span></div>}
-          <div style={{ borderTop: '3px solid #C9A86A', background: '#1E293B', color: '#fff', display: 'flex', justifyContent: 'space-between', padding: '8px 10px', marginTop: 4 }}>
+          <div style={{ borderTop: '3px solid #C9A86A', background: '#141F2B', color: '#fff', display: 'flex', justifyContent: 'space-between', padding: '8px 10px', marginTop: 4 }}>
             <span style={{ fontSize: 11, fontWeight: 700 }}>TOTAL</span><span style={{ fontSize: 14, fontWeight: 900 }}>{fmt(total)}</span>
           </div>
         </div>
