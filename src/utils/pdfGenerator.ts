@@ -50,7 +50,7 @@ export async function generarPDFBase64(data: PDFGeneratorData): Promise<string> 
   const emisoraLines = [data.emisora.nombre, `NIF: ${data.emisora.nif}`, data.emisora.direccion, `${data.emisora.telefono} · ${data.emisora.email}`];
   const clienteLines = [data.cliente.razon_social, `NIF: ${data.cliente.nif_cif}`, data.cliente.direccion, data.cliente.ciudad, data.cliente.email].filter(l => l && l.trim() !== '');
   const afterEmisora = drawInfoBox(ML, 'EMISORA', TEAL, emisoraLines);
-  const afterCliente = drawInfoBox(ML + COL_W + SEC_GAP, 'CLIENTE', GOLD, clienteLines);
+  const afterCliente = drawInfoBox(ML + COL_W + SEC_GAP, 'CLIENTE', TEAL, clienteLines);
   curY = Math.min(afterEmisora, afterCliente) - 14;
   page.drawText('TRABAJOS REALIZADOS', { x: ML, y: curY - 12, size: 12, font: bold, color: BLACK });
   curY -= 12 + 6;
